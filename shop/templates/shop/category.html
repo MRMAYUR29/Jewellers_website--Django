@@ -1,0 +1,124 @@
+{% extends 'shop/basic.html' %}
+{% block title%}Best Ecommerce Website{% endblock %}
+{% block homeactive %}active{% endblock homeactive %}
+
+{% block css %}
+body{
+    background: #FDF3F1;
+}
+.catContainer{
+    display: flex;
+    flex-direction: row;
+    justifyContent: center;
+    flex-wrap: wrap;
+    margin-top: 2.35rem;
+}
+.main_product{
+    transition: transform 0.3s;
+}
+  
+.main_product:hover{
+    transform: scale(1.01);
+}
+
+.img_style{
+    width: 216px;
+    height: 216px;
+    margin: 10px;
+    object-fit: contain;
+    transition: transform 0.3s;
+}
+  
+.img_style:hover{
+    transform: scale(1.1);
+}
+
+.both_btn{
+    display: flex;
+    justify-content: space-between;
+}
+
+.divpr{
+    padding: 3px;
+    border: 1px solid black;
+    border-radius: 5px;
+    transition: transform .2s;
+}
+  
+.divpr:hover{
+    transform: scale(1.01);
+    box-shadow:  3px 3px 6px black,  -3px -3px 6px #fff;
+}
+
+.cart_photo{
+    width: 35px;
+    height: 35px;
+}
+    
+.cart_btn{
+    width: 142px;
+    height: 42px;
+    cursor: pointer;
+    color: #fff;
+    background-color: burlywood;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: none;
+    text-decoration: none;
+    padding: 5px;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 20px;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    /* background-color: #007bff; */
+    /* box-shadow:inset 3px 3px 6px blue,inset -3px -3px 6px black; */
+    /* box-shadow:inset 3px 3px 6px #007bff,inset -3px -3px 6px black; */
+    transition: transform .2s;
+}
+  
+.cart_btn:hover{
+    outline: none;
+    transform: scale(1.01);
+    box-shadow:  3px 3px 6px black,  -3px -3px 6px #fff;
+}
+{% endblock css %}
+
+
+{% block body %}
+{% load static %}
+<div class="container">
+<div class="catContainer">  
+
+{% for i in allProds %}
+<div class="col-xs-3 col-sm-3 col-md-3 main_product">
+    <div class="card align-items-center" style="border:none;">
+        <img src='/media/{{i.image}}' class="img_style" alt="...">
+        <div class="card-body" style="width:240px; height:240px;">
+            <h5 class="card-title" style="height:20%;" id="namepr{{i.id}}">{{i.product_name|slice:"0:20"}}</h5>
+            <p class="card-text" style="height:25%;">{{i.desc|slice:"0:53"}}</p>
+            <h6 class="card-title" style="height:16%;">Price: <span id="pricepr{{i.id}}">{{i.price}}</span></h6>
+            <!--Add To Cart Button-->
+            <div class="both_btn">
+            <span id="divpr{{i.id}}" class="divpr">
+                {% comment %} <button id="pr{{i.id}}" class="btn btn-primary cart">Add To Cart</button> {% endcomment %}
+                <img src="{%static 'images/Add_to_cart/addtocart.png' %}" id="pr{{i.id}}" class="cart_photo">
+            </span>
+            <a href="/shop/products/{{i.id}}"><button id="qv{{i.id}}" class="cart_btn">QuickView</button></a>
+        </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+</div>
+</div>
+
+
+{% endblock body %}
+
+
+{% block js %}
+{% endblock js %}
