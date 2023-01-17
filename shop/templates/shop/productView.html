@@ -2,120 +2,73 @@
 
 {% block title %} {{product.product_name}} - MahavirChemist{% endblock title %}
 
+{% block css %}
+.js-image-zoom__zoomed-image{
+  {% comment %} border: 2px solid red; {% endcomment %}
+  border-radius: 10px;
+  z-index: 10;
+}
+body{
+  background: #FDF3F1;
+}
+.cart_btn{
+  width: 370px;
+  height: 46px;
+  cursor: pointer;
+  color: #fff;
+  background-color: burlywood;
+  display: inline-block;
+  font-weight: 700;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  border: none;
+  text-decoration: none;
+  padding: 5px;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  border-radius: 24px;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  /* background-color: #007bff; */
+  /* box-shadow:inset 3px 3px 6px blue,inset -3px -3px 6px black; */
+  /* box-shadow:inset 3px 3px 6px #007bff,inset -3px -3px 6px black; */
+  transition: transform .2s;
+}
+
+.cart_btn:hover{
+  outline: none;
+  transform: scale(1.01);
+  box-shadow:  3px 3px 6px black,  -3px -3px 6px #fff;
+}
+
+.cart_btn:focus{
+  outline: none;
+}
+
+.buy_photo{
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  position: relative;
+  right: 12px;
+}
+
+{% endblock css %}
 {% block body %}
-{% block css%}
-<style>
-  body {
-    font-family: 'Inter', 'Roboto',sans-serif;
-  }
-  .f {
-    display: flex;
-  }
-  .a {
-    align-items: center;
-  }
-  .j {
-    justify-content: center;
-  }
-  .cn {
-    height: 100vh;
-  }
-  .wp {
-    --t: 900px;
-    width: var(--t);
-  }
-  .wp aside {
-    width: 50%;
-  }
-  .wp aside:last-child {
-    padding: 0 0 0 10px;
-  }
-  .mgt {
-    margin-top: 10px;
-  }
-  /* Zoom styles */
-  .zoom, .original {
-    position: relative;
-  }
-  .zoom {
-    display: inline-block;
-  }
-  .original {
-    cursor: crosshair;
-  }
-  #target {
-    width: calc(var(--t) / 2);
-  }
-  .zoom .viewer {
-    position: absolute;
-    top: 0;
-    left: 100%;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-  .zoom .viewer img {
-    position: absolute;
-  }
-  .magnifier {
-    position: absolute;
-    background: #000;
-    opacity: 0.7;
-    top: 0;
-    left: 0;
-  }
-  .magnifier, .viewer {
-    display: none;
-  }
-  .original:hover ~ div {
-    display: block;
-  }
-  .original::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    {% comment %} z-index: 1; {% endcomment %}
-  }
-</style>
-{% endblock css%}
+{% load static %}
 <div class="container my-4">
     <div class="row">
         <div class="col-md-4">
-          <div class="cn f a j">
-
-            <div class="wp f">
-              <aside>
-                <div class="zoom">
-                  <div class="original">
-                    <img src="/media/{{product.image}}" style="width: 273px; height: 290px;" id="target">
-                  </div>
-                  <div class="viewer">
-                    <img src="/media/{{product.image}}">
-                  </div>
-                  <div class="magnifier" style="width:100px; height:100px;"></div>
-                </div>	
-              </aside>
-              <aside>
-                <h2>Look this awesome image</h2>
-                <div class="mgt">
-                  <input type="range" min="2" max="10" value="2">
-                </div>
-              </aside>
+            <div class="row" id="img-container" style="width: 480px; height:420px;">
+                <img src="/media/{{product.image}}" style="border-radius: 10px; border: 2px solid #832729 "  alt="Loading..">
             </div>
-          </div>
-            {% comment %} <div class="row">
-                <img src="/media/{{product.image}}" width="273px" height="290px" alt="Loading..">
-            </div> {% endcomment %}
-            <div class="row mt-4">
-                <button class="btn btn-primary my-2 mx-1">Buy Now</button>
-                <button class="btn btn-primary my-2 mx-1">Add To Cart</button>
+            <div class="row mt-4 mb-4">
+                <button class="cart_btn"><img src="{%static 'images/Add_to_cart/icons8-buying-50.png' %}" class="buy_photo">Buy Now</button>
+                {% comment %} <button class="btn btn-primary my-2 mx-1">Add To Cart</button> {% endcomment %}
             </div>
         </div>
             
-        <div class="col-md-8">
+        <div class="col-md-8" style="position: relative; left: 100px">
             <h4>{{product.product_name}}</h4>
             <h3>Rs.{{product.price}}</h3>
             <p>{{product.desc}}</p>
@@ -125,31 +78,18 @@
 </div>
 
 {% endblock body %}
+
 {% block js %}
 {% load static %}
-<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
-	<script type="text/javascript" src="{% static 'jsforshop.js'%}"></script>
-	<script type="text/javascript">
-		var l = $('#target').zoom(2);
+<script src="https://unpkg.com/js-image-zoom/js-image-zoom.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-image-zoom/js-image-zoom.min.js"></script>
+<script>
+  var options1 = {
+    width: 400,
+    zoomWidth: 500,
+    offset: {vertical: 0, horizontal: 10}
+};
 
-		$('input[type="range"]').on('change', function () {
-
-			l.setZoom(this.value);
-
-		});
-	</script>
-	<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-36251023-1']);
-  _gaq.push(['_setDomainName', 'jqueryscript.net']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
+new ImageZoom(document.getElementById("img-container"), options1);
 </script>
-{% endblock js%}
+{% endblock js %}
